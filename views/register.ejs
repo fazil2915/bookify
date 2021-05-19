@@ -6,7 +6,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" href="css/style.css">
 
 	</head>
@@ -17,25 +17,26 @@
 				<div class="col-md-12">
 					<div class="wrapper">
 						<div class="row no-gutters">
-              
+
 							<div class="col-lg-8 col-md-7 order-md-last d-flex align-items-stretch">
-                
+
 								<div class="contact-wrap w-100 p-md-5 p-4">
 									<h3 class="mb-12 text-center" style="color:#51CEA6;"><b>Create Account</b></h3>
-									<div id="form-message-warning" class="mb-4"></div> 
+									<div id="form-message-warning" class="mb-4"></div>
 				      		<div id="form-message-success" class="mb-4">
 				            Your message was sent, thank you!
 				      		</div>
 									<form method="POST" id="contactForm" name="contactForm" class="contactForm">
-										
-											<!--Sign Up with Google-->
+
+							 				<!--Sign Up with Google-->
 										<div class="col-md-12">
 											<div class="form-group"style="display: flex; justify-content: center; margin-top: 30px;">
 												<input type="submit" value="Sign Up with Google" class="btn btn-primary">
 												<div class="submitting"></div>
-											</div>  
+											</div>
 										</div>
-
+                  </form>
+                  <form method="POST" action="/register" id="contactForm" name="contactForm" class="contactForm">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -43,46 +44,47 @@
 													<input type="text" class="form-control" name="name" id="name" placeholder="Name">
 												</div>
 										</div>
-                     
-										<div class="col-md-12"> 
+
+										<div class="col-md-12">
 												<div class="form-group">
 													<label class="label" for="email">Email Address</label>
-													<input type="email" class="form-control" name="email" id="email" placeholder="Email">
+													<input type="email" class="form-control" name="username" id="email" placeholder="Email">
 										</div>
-                        
-										</div><div class="col-md-12"> 
+
+										</div><div class="col-md-12">
 												<div class="form-group">
 													<label class="label" for="email">Password</label>
 													<input type="password" class="form-control" name="password" id="password" placeholder="Password">
 												</div>
 										</div>
-                      
+
 										<div class="col-md-12">
 												<div class="form-group" style="display: flex; justify-content: center;">
 													<input type="submit" value="Sign Up" class="btn btn-primary">
 													<div class="submitting"></div>
-												</div>  
+												</div>
 										</div>
 								</div>
-                    
+
 									</form>
 								</div>
 							</div>
-              
-              
+
+
 							<div class="col-lg-4 col-md-5 d-flex align-items-stretch">
 								<div class="info-wrap bg-primary w-100 p-4 mb-12 text-center">
 									<h3>
-										<b>Welcome Back!</b>
+										<b>Already Registered?</b>
 									</h3>
-                  
+
 									<p class="mb-4">To keep connected with us please login with your personal info.</p>
 				        	<div class="dbox w-100  ">
 				        		<div class="form-group" style="display: flex; justify-content: center; ">
-									<input type="submit" style="color: white;" value="Sign In" class="btn defaultbtn-primary text-center">
+                      <a type="submit" style="color: white;" value="Sign In" class="btn defaultbtn-primary text-center" href="/signin">Sign In</a>
+									<%# <input type="submit" style="color: white;" value="Sign In" class="btn defaultbtn-primary text-center"> %>
 									<div class="submitting"></div>
 								</div>
-                    
+
 				          </div>
 				          </div>
 			          </div>
