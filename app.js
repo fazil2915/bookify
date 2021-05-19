@@ -36,7 +36,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //mongoose connection
-mongoose.connect("mongodb://localhost:27017/BookDB", {
+ mongoose.connect("mongodb+srv://book1234:book2021@cluster0.y2gry.mongodb.net/test",()=>
+ console.log('db connected'),{
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -57,8 +58,17 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//Register route
-app.get("/register", function(req, res) {
+//routes
+function isLoggedIn(req,res,next){
+  if(req.isAuthenticated())return next();
+  res.redirect('/signin')
+}
+function isLoggedOut(req,res,next){
+  if(!req.isAuthenticated())return next();
+  res.redirect('/')
+}
+
+app.get("/", function(req, res) {
   res.render("register");
 })
 
@@ -70,7 +80,7 @@ app.post("/register", function(req, res) {
   }, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
-      res.redirect("/register")
+      res.redirect("/")
     } else {
       passport.authenticate("local")(req, res, function() {
         res.redirect("/about")
@@ -79,14 +89,14 @@ app.post("/register", function(req, res) {
   })
 });
 
-//Sign in route
+
 app.get("/signin", function(req, res) {
   res.render("signin");
 })
 
 app.post("/signin", function(req, res) {
-  console.log(req.body.username);
-  console.log(req.body.password);
+  //console.log(req.body.username);
+  //console.log(req.body.password);
   const user = new User({
     username: req.body.username,
     password: req.body.password
@@ -94,17 +104,21 @@ app.post("/signin", function(req, res) {
   req.login(user, function(err) {
     if (err) {
       console.log(err);
+    
     } else {
       passport.authenticate("local")(req, res, function() {
         res.redirect("/about");
       })
     }
 });
-});
+ });
+app.get('/logout',(req,res)=>{
+  req.session.destroy();
+  res.redirect('/');
+})
 
 
-
-app.get("/about", function(req, res) {
+app.get("/about",isLoggedIn, function(req, res) {
   if (req.isAuthenticated()) {
     res.render("about")
   } else {
