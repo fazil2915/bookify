@@ -12,6 +12,7 @@ const app = express();
 const ejs = require("ejs");
 
 
+
 //view engine setup
 
 app.set('view engine', 'ejs');
@@ -91,10 +92,10 @@ app.post("/register", function(req, res) {
     username: req.body.username
   }, req.body.password, function(err, user) {
     if (err) {
-      console.log(err);
+      console.log();
       res.redirect("/")
     } else {
-      passport.authenticate("local")(req, res, function() {
+      passport.authenticate("local",(req, res)=> {
         res.redirect("/home")
       })
     }
@@ -116,7 +117,6 @@ app.post("/signin", function(req, res) {
   req.login(user, function(err) {
     if (err) {
       console.log(err);
-
     } else {
       passport.authenticate("local")(req, res, function() {
         res.redirect("/home");
@@ -148,7 +148,7 @@ app.get("/home",isLoggedIn, function(req, res) {
 })
 
 //addbook route
-app.get("/addbook", function(req, res) {
+app.get("/addbook",isLoggedIn, function(req, res) {
   if (req.isAuthenticated()) {
   console.log(req.user.id);
   console.log(req.user.email);

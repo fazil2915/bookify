@@ -8349,3 +8349,22 @@ textarea.form-control {
   display: none;
   font-size: 16px;
   font-weight: bold; }
+
+.card-img{
+height: 15em;
+width: 10em;
+margin-left: 3rem;
+}
+.btn{
+  text-align: center;
+  
+  
+}
+.card-title{
+  font-family: -webkit-body;
+    font-style: initial;
+}
+.auth{
+  font-size: medium;
+    font-weight: bold
+}
