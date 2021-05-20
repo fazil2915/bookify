@@ -1,11 +1,25 @@
 <%- include('partials/header.ejs') %>
   <div class="container">
-  <%# <div class="row"> %>
-    <div class="card-deck mt-5">
-      <div class="card" style="width: 18rem;">
+   <div class="row">
+    <div class="card-deck mt-5 card-columns">
+
+      <% newListItem.forEach(function(item) { %>
+        <div class="card">
+          <img src="<%= item.bookURL %>" class="card-img-top w-50 mt-2 ml-5" alt="...">
+          <div class="card-body">
+            <h5 class="card-title"><%= item.booktitle %></h5>
+            <p><%= item.bookauthor %></p>
+            <a href="#" class="btn btn-primary">View</a>
+          </div>
+        </div>
+    <%  }) %>
+
+
+      <%# <div class="card" style="width: 18rem;">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">Book 1</h5>
+          <h2 class="card-title">Book 2</h2>
+          <h5>author</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
@@ -14,21 +28,13 @@
       <div class="card" style="width: 18rem;">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">Book 2</h5>
+          <h2 class="card-title">Book 3</h2>
+          <h5>author</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
-      </div>
-
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Book 3</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
+      </div> %>
+     </div>
     </div>
   </div>
 

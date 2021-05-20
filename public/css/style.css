@@ -1,4 +1,4 @@
-//navbar
+/* //navbar */
 .navbar {
   background: #3ab790;
   padding: 1rem 8rem;
@@ -28,7 +28,11 @@
   border-radius: 30px;
 }
 
-
+/* .card-img-top {
+    width: 50%;
+    height: 15vw;
+    object-fit: cover;
+} */
 
 
 

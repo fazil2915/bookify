@@ -43,15 +43,26 @@ app.use(passport.session());
 });
 mongoose.set('useCreateIndex', true);
 
+
+//Schema Define
+const bookSchema = new mongoose.Schema({
+  booktitle: String,
+  bookauthor: String,
+  bookContent: String,
+  bookURL: String
+})
+
 const userSchema = new mongoose.Schema({
   email: String,
-  password: String
+  password: String,
+  book: [bookSchema]
 });
 
 userSchema.plugin(passportLocalMongoose);
 
 
 const User = new mongoose.model("User", userSchema);
+const Book = new mongoose.model("Book", bookSchema);
 
 passport.use(User.createStrategy());
 
@@ -72,6 +83,7 @@ app.get("/", function(req, res) {
   res.render("register");
 })
 
+//Register Route
 app.post("/register", function(req, res) {
   console.log(req.body.username);
   console.log(req.body.password);
@@ -89,7 +101,7 @@ app.post("/register", function(req, res) {
   })
 });
 
-
+//Sign in Route
 app.get("/signin", function(req, res) {
   res.render("signin");
 })
@@ -117,13 +129,66 @@ app.get('/logout',(req,res)=>{
   res.redirect('/');
 })
 
-
+//home route
 app.get("/home",isLoggedIn, function(req, res) {
   if (req.isAuthenticated()) {
-    res.render("home")
+    Book.find({}, function(err, foundList) {
+      if(err) {
+          res.send(err)
+      }
+      else {
+        res.render("home", {newListItem: foundList})
+      }
+
+    })
+
   } else {
     res.redirect("/signin")
   }
+})
+
+//addbook route
+app.get("/addbook", function(req, res) {
+  if (req.isAuthenticated()) {
+  console.log(req.user.id);
+  console.log(req.user.email);
+  res.render("addbook")
+}
+else {
+  res.render("signin")
+}
+})
+
+
+//addbook route
+app.post("/addbook", function(req, res) {
+  if (req.isAuthenticated()) {
+    console.log(req.body.title);
+    console.log(req.body.author);
+    console.log(req.body.content);
+
+    const title = req.body.title;
+    const author = req.body.author;
+    const content = req.body.content;
+    const image = req.body.image;
+
+
+      const book1 = new Book ({
+        booktitle: title,
+        bookauthor: author,
+        bookContent: content,
+        bookURL: image
+      })
+      book1.save();
+      res.redirect("/home");
+  }
+
+   else {
+    res.redirect("/signin")
+  }
+
+
+
 })
 
 //listening port setup
