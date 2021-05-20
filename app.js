@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 var path = require('path');
-var userRouter = require('./routes/index')
+var Router = require('./routes/index')
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 //routes
-// app.use('/', userRouter);
+// app.use(Router);
 
 //Session initialization
 app.use(session({
@@ -78,6 +78,7 @@ function isLoggedOut(req,res,next){
   if(!req.isAuthenticated())return next();
   res.redirect('/')
 }
+
 
 app.get("/", function(req, res) {
   res.render("register");
@@ -187,8 +188,20 @@ app.post("/addbook", function(req, res) {
     res.redirect("/signin")
   }
 
+})
 
+<!-- View Book Route -->
 
+app.get("/home/:id", function(req, res) {
+  if (req.isAuthenticated()) {
+const name = req.params.id;
+Book.findOne({booktitle: name}, function(err, found) {
+   res.render("viewpage", {title: found.booktitle, author: found.bookauthor, content: found.bookContent, img: found.bookURL})
+})
+  }
+  else {
+    res.redirect("/signin")
+  }
 })
 
 //listening port setup
