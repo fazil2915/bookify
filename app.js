@@ -191,6 +191,20 @@ app.post("/addbook", function(req, res) {
 
 })
 
+<!-- View Book Route -->
+
+app.get("/home/:id", function(req, res) {
+  if (req.isAuthenticated()) {
+const name = req.params.id;
+Book.findOne({booktitle: name}, function(err, found) {
+   res.render("viewpage", {title: found.booktitle, author: found.bookauthor, content: found.bookContent, img: found.bookURL})
+})
+  }
+  else {
+    res.redirect("/signin")
+  }
+})
+
 //listening port setup
 var server = http.createServer(app);
 server.listen(3000, (err) => {
