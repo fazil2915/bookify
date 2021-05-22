@@ -20,7 +20,6 @@
     "passport-local-mongoose": "^6.1.0"
   },
   "devDependencies": {
-    "ejs-lint": "^1.2.0",
     "nodemon": "^2.0.7"
   }
 }
