@@ -36,11 +36,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //mongoose connection
- mongoose.connect("mongodb+srv://book1234:book2021@cluster0.y2gry.mongodb.net/test",()=>
- console.log('db connected'),{
+ mongoose.connect("mongodb+srv://book1234:book2021@cluster0.y2gry.mongodb.net/test", {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+}, ()=>
+ console.log('db connected'),);
 mongoose.set('useCreateIndex', true);
 
 
@@ -49,13 +49,14 @@ const bookSchema = new mongoose.Schema({
   booktitle: String,
   bookauthor: String,
   bookContent: String,
-  bookURL: String
+  bookURL: String,
+  Category: String
 })
 
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-  book: [bookSchema]
+  Mybook: [bookSchema]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -190,10 +191,11 @@ app.post("/addbook", function(req, res) {
 
 })
 
-// <!-- View Book Route -->
+ <!-- View Book Route -->
 
 app.get("/home/:id", function(req, res) {
   if (req.isAuthenticated()) {
+    console.log(req.user.id);
 const name = req.params.id;
 Book.findOne({booktitle: name}, function(err, found) {
    res.render("viewpage", {title: found.booktitle, author: found.bookauthor, content: found.bookContent, img: found.bookURL})
@@ -204,8 +206,53 @@ Book.findOne({booktitle: name}, function(err, found) {
   }
 })
 
+
+
+<!-- My Book Route -->
+
+app.get("/home/mybooks/:title", function(req, res) {
+ if (req.isAuthenticated()) {
+   console.log(req.params.title);
+   console.log(req.user.id);
+   User.findOne({_id: req.user.id}, function(err, found) {
+     if (err) {
+        res.send(err);
+     }
+     else {
+       Book.findOne({booktitle: req.params.title}, function(err, foundList) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+      const book1 = new Book({
+       booktitle: foundList.booktitle,
+       bookauthor: foundList.bookauthor,
+       bookContent: foundList.bookContent,
+       bookURL: foundList.bookURL
+       })
+       found.Mybook.push(book1);
+       found.save();
+       res.render("mybook", {newListItem: found.Mybook});
+       }
+       })
+     }
+   })
+  }
+  else {
+    res.send("/signin")
+  }
+})
+
 app.get("/mybook", function(req, res) {
-  console.log(req.body.name);
+  if (req.isAuthenticated()) {
+    User.findOne({_id: req.user.id}, function(err, found) {
+      res.render("mybook", {newListItem: found.Mybook})
+    })
+  }
+  else {
+    res.redirect("/signin")
+  }
+
 })
 
 //listening port setup
