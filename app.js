@@ -190,7 +190,7 @@ app.post("/addbook", function(req, res) {
 
 })
 
-<!-- View Book Route -->
+// <!-- View Book Route -->
 
 app.get("/home/:id", function(req, res) {
   if (req.isAuthenticated()) {
