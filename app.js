@@ -204,6 +204,10 @@ Book.findOne({booktitle: name}, function(err, found) {
   }
 })
 
+app.get("/mybook", function(req, res) {
+  console.log(req.body.name);
+})
+
 //listening port setup
 var server = http.createServer(app);
 server.listen(3000, (err) => {
