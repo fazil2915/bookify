@@ -7,6 +7,7 @@ font-family: "Poppins", sans-serif;
   background: #3ab790;
   padding: 1rem 8rem;
   z-index: 1000;
+   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3)
 }
 
 .navbar .navbar-brand {
@@ -8361,8 +8362,8 @@ textarea.form-control {
     }
     .btn{
       text-align: center;
-    
-    
+
+
     }
     .card-title{
       font-family: -webkit-body;
@@ -8371,4 +8372,4 @@ textarea.form-control {
     .auth{
       font-size: medium;
         font-weight: bold
-    } 
+    }

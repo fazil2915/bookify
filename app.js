@@ -50,7 +50,7 @@ const bookSchema = new mongoose.Schema({
   booktitle: String,
   genre: String,
   bookauthor: String,
-  bookURL: String,
+  url: String,
   language: String,
   link: String,
   bookContent: String
@@ -132,6 +132,13 @@ app.post("/signin", function(req, res) {
 app.get('/logout',(req,res)=>{
   req.session.destroy();
   res.redirect('/');
+})
+
+app.get("/home/category/:genre", function(req, res) {
+  const list = _.capitalize([req.params.genre]);
+  Book.find({genre: list}, function(err, found) {
+    res.render("catogory", {newListItem: found, new: list})
+  })
 })
 
 //home route
@@ -270,15 +277,15 @@ app.get("/mybook", function(req, res) {
 <!-- Search Route -->
 app.post("/home", function(req, res) {
   if (req.isAuthenticated()) {
-    const search = _.startCase([req.body.search]);
+    const search = _.startCase(_.toLower(req.body.search));
     console.log(search);
-    Book.find({booktitle: search}, function(err, found) {
+    Book.find({booktitle: search}, function(err, foundList) {
       if (err) {
         res.send(err);
       }
       else {
-        console.log(found);
-        res.render("searchbook", {newListItem: found})
+        console.log(foundList);
+        res.render("searchbook", {newListItem: foundList})
       }
     })
   }
