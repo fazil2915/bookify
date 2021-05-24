@@ -1,0 +1,27 @@
+<%- include('partials/header.ejs') %>
+
+
+
+  <section class="mt-3">
+    <div class="container">
+      <div class="row ">
+            <div class="col-md-3 p-3 ">
+              <% newListItem.forEach(function(item) { %>
+              <div class="card" style="height:28rem;width: 16rem;">
+                <img src=" <%= item.url %>" class="card-img mt-2" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= item.booktitle %>
+                  </h5>
+                  <p>
+                    <%= item.bookauthor %>
+                  </p>
+                   <a class="btn btn-primary" href="/home/<%=item.booktitle%>">View</a>
+                </div>
+              </div>
+              <%  }) %>
+            </div>
+
+      </div>
+    </div>
+  </section>

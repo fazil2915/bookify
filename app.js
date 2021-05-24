@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 var path = require('path');
+var _ = require('lodash');
 var Router = require('./routes/index')
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -47,10 +48,12 @@ mongoose.set('useCreateIndex', true);
 //Schema Define
 const bookSchema = new mongoose.Schema({
   booktitle: String,
+  genre: String,
   bookauthor: String,
-  bookContent: String,
-  bookURL: String,
-  Category: String
+  url: String,
+  language: String,
+  link: String,
+  bookContent: String
 })
 
 const userSchema = new mongoose.Schema({
@@ -131,6 +134,13 @@ app.get('/logout',(req,res)=>{
   res.redirect('/');
 })
 
+app.get("/home/category/:genre", function(req, res) {
+  const list = _.capitalize([req.params.genre]);
+  Book.find({genre: list}, function(err, found) {
+    res.render("catogory", {newListItem: found, new: list})
+  })
+})
+
 //home route
 app.get("/home",isLoggedIn, function(req, res) {
   if (req.isAuthenticated()) {
@@ -149,7 +159,7 @@ app.get("/home",isLoggedIn, function(req, res) {
   }
 })
 
-//addbook route
+<!-- addbook route -->
 app.get("/addbook", function(req, res) {
   if (req.isAuthenticated()) {
   console.log(req.user.id);
@@ -162,24 +172,30 @@ else {
 })
 
 
-//addbook route
+
 app.post("/addbook", function(req, res) {
   if (req.isAuthenticated()) {
     console.log(req.body.title);
     console.log(req.body.author);
     console.log(req.body.content);
 
+    const genre = req.body.genre;
     const title = req.body.title;
     const author = req.body.author;
     const content = req.body.content;
     const image = req.body.image;
+    const link = req.body.link;
+    const lan = req.body.language;
 
 
       const book1 = new Book ({
-        booktitle: title,
-        bookauthor: author,
-        bookContent: content,
-        bookURL: image
+        genre: req.body.genre,
+        booktitle: req.body.title,
+        bookauthor: req.body.author,
+        url: req.body.image,
+        language: req.body.language,
+        link: req.body.link,
+        bookContent: req.body.content
       })
       book1.save();
       res.redirect("/home");
@@ -198,7 +214,7 @@ app.get("/home/:id", function(req, res) {
     console.log(req.user.id);
 const name = req.params.id;
 Book.findOne({booktitle: name}, function(err, found) {
-   res.render("viewpage", {title: found.booktitle, author: found.bookauthor, content: found.bookContent, img: found.bookURL})
+   res.render("viewpage", {img: found.url, title: found.booktitle, author: found.bookauthor, genre: found.genre, content: found.bookContent, link: found.link})
 })
   }
   else {
@@ -225,10 +241,13 @@ app.get("/home/mybooks/:title", function(req, res) {
       }
       else {
       const book1 = new Book({
-       booktitle: foundList.booktitle,
-       bookauthor: foundList.bookauthor,
-       bookContent: foundList.bookContent,
-       bookURL: foundList.bookURL
+        booktitle: foundList.booktitle,
+        genre: foundList.genre,
+        bookauthor: foundList.bookauthor,
+        url: foundList.url,
+        language: foundList.language,
+        link: foundList.link,
+        bookContent: foundList.bookContent
        })
        found.Mybook.push(book1);
        found.save();
@@ -253,6 +272,26 @@ app.get("/mybook", function(req, res) {
     res.redirect("/signin")
   }
 
+})
+
+<!-- Search Route -->
+app.post("/home", function(req, res) {
+  if (req.isAuthenticated()) {
+    const search = _.startCase(_.toLower(req.body.search));
+    console.log(search);
+    Book.find({booktitle: search}, function(err, foundList) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        console.log(foundList);
+        res.render("searchbook", {newListItem: foundList})
+      }
+    })
+  }
+else {
+  res.send("/signin");
+}
 })
 
 //listening port setup

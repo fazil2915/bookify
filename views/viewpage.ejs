@@ -4,12 +4,13 @@
   <div class="jumbotron text-center mt-5">
       <div class="container">
         <img src="<%= img %>" class="mt-3 mb-3 img-thumbnail" style="max-width:15%;" alt="">
-        <h1 class="jumbotron-heading" name="title"><%= title.substring(0, 15) %></h1>
+        <h1 class="jumbotron-heading" name="title"><%= title.substring(0, 18) %></h1>
         <h5><%= author %></h5>
+        <h3>Genre: <%= genre %></h3>
         <p class="lead text-muted"><%= content %></p>
         <p>
           <a type="submit" class="btn btn-primary my-1" href="/home/mybooks/<%= title %>">Add to <b>MY BOOKS</b></a>
-          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+          <a href="<%= link %>" class="btn btn-secondary my-2">Purchase Link</a>
         </p>
       </div>
 
