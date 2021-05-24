@@ -1,14 +1,16 @@
-const express = require('express');
-const http = require('http');
-var path = require('path');
-var _ = require('lodash');
-var Router = require('./routes/index')
+require('dotenv').config()
+const express = require("express");
+const http = require("http");
+var path = require("path");
+const _ = require("lodash");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const findOrCreate = require("mongoose-findorcreate")
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 var expressLayouts = require('express-ejs-layouts');
-var bodyParser = require('body-parser')
+const bodyParser = require("body-parser")
 const app = express();
 const ejs = require("ejs");
 
@@ -58,11 +60,13 @@ const bookSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
   email: String,
+  googleId: String,
   password: String,
   Mybook: [bookSchema]
 });
 
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate)
 
 
 const User = new mongoose.model("User", userSchema);
@@ -70,8 +74,30 @@ const Book = new mongoose.model("Book", bookSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+
+<!-- Google Auth -->
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/home",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 //routes
 function isLoggedIn(req,res,next){
@@ -82,6 +108,17 @@ function isLoggedOut(req,res,next){
   if(!req.isAuthenticated())return next();
   res.redirect('/')
 }
+
+<!-- Google login route -->
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
+  app.get('/auth/google/home',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect("/home");
+    });
 
 
 app.get("/", function(req, res) {
