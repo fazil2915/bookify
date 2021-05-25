@@ -8373,3 +8373,69 @@ textarea.form-control {
       font-size: medium;
         font-weight: bold
     }
+/* logout button */
+
+.log-out {
+  margin-top: 10px;
+  background-color: white;
+  width: 3em;
+  height: 30px;
+  margin-left: 6px;
+  border-radius: 10px;
+  text-align: center;
+  
+  }.log-out:hover {
+    opacity: 0.7;
+}
+
+  fa, .fas {
+    font-weight: 900;
+
+    
+}
+
+
+
+/* star */
+
+
+    *{
+      margin: 0;
+      padding: 0;
+  }
+  .rate {
+      
+      align-items: center;
+      height: 46px;
+      padding: 0 10px;
+  }
+  .rate:not(:checked) > input {
+      position:absolute;
+      top:-9999px;
+  }
+  .rate:not(:checked) > label {
+      
+      width:1em;
+      overflow:hidden;
+      white-space:nowrap;
+      cursor:pointer;
+      font-size:30px;
+      color:#ccc;
+  }
+  .rate:not(:checked) > label:before {
+      content: '★ ';
+  }
+  .rate > input:checked ~ label {
+      color: #ffc700;    
+  }
+  .rate:not(:checked) > label:hover,
+  .rate:not(:checked) > label:hover ~ label {
+      color: #deb217;  
+  }
+  .rate > input:checked + label:hover,
+  .rate > input:checked + label:hover ~ label,
+  .rate > input:checked ~ label:hover,
+  .rate > input:checked ~ label:hover ~ label,
+  .rate > label:hover ~ input:checked ~ label {
+      color: #c59b08;
+  }
