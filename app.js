@@ -85,7 +85,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 
-<!-- Google Auth -->
+// <!-- Google Auth -->
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -109,7 +109,7 @@ function isLoggedOut(req,res,next){
   res.redirect('/')
 }
 
-<!-- Google login route -->
+// <!-- Google login route -->
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
@@ -196,7 +196,7 @@ app.get("/home",isLoggedIn, function(req, res) {
   }
 })
 
-<!-- addbook route -->
+// <!-- addbook route -->
 app.get("/addbook", function(req, res) {
   if (req.isAuthenticated()) {
   console.log(req.user.id);
@@ -244,7 +244,7 @@ app.post("/addbook", function(req, res) {
 
 })
 
- <!-- View Book Route -->
+//  <!-- View Book Route -->
 
 app.get("/home/:id", function(req, res) {
   if (req.isAuthenticated()) {
@@ -261,7 +261,7 @@ Book.findOne({booktitle: name}, function(err, found) {
 
 
 
-<!-- My Book Route -->
+// <!-- My Book Route -->
 
 app.get("/home/mybooks/:title", function(req, res) {
  if (req.isAuthenticated()) {
@@ -311,7 +311,7 @@ app.get("/mybook", function(req, res) {
 
 })
 
-<!-- Search Route -->
+// <!-- Search Route -->
 app.post("/home", function(req, res) {
   if (req.isAuthenticated()) {
     const search = _.startCase(_.toLower(req.body.search));
