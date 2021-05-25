@@ -1,22 +1,17 @@
 <%- include('partials/header.ejs') %>
-
-
   <section class="mt-3">
     <div class="container">
-
-      <div class="dropdown show">
+      <div class="dropdown show " style="float: left;">
         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Select Category
         </a>
-
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" href="/home/category/Motivation">Motivation</a>
-          <a class="dropdown-item" href="#">Thriller</a>
-          <a class="dropdown-item" href="#">Drama</a>
+          <a class="dropdown-item" href="/home/category/Thriller">Thriller</a>
+          <a class="dropdown-item" href="/home/category/Drama">Drama</a>
         </div>
       </div>
-
-      <h1><b>All Books</b></h1>
+      <h1 style="text-align: center;"><b>All Books</b></h1>
       <div class="row ">
         <% newListItem.forEach(function(item) { %>
           <div class="col-md-3 p-3 ">
@@ -24,13 +19,12 @@
               <img src=" <%= item.url %>" class="card-img mt-2" alt="...">
               <div class="card-body">
                 <h5 class="card-title">
-                  <%= item.booktitle %>
+                  <%= item.booktitle .substring(0, 15)  %>
                 </h5>
                 <p>
                   <%= item.bookauthor %>
                 </p>
-                <p style="position: absolute;">
-                 <a class="btn btn-primary" style="position:absolute;" href="/home/<%=item.booktitle%>">View</a></p>
+                 <a class="btn btn-primary" href="/home/<%=item.booktitle%>">View</a>
               </div>
             </div>
           </div>

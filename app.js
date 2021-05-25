@@ -244,10 +244,10 @@ app.post("/addbook", function(req, res) {
     const image = req.body.image;
     const link = req.body.link;
     const lan = req.body.language;
-
+    console.log(genre);
 
       const book1 = new Book ({
-        genre: req.body.genre,
+        genre: genre,
         booktitle: req.body.title,
         bookauthor: req.body.author,
         url: req.body.image,

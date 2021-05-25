@@ -8542,7 +8542,7 @@ textarea.form-control {
     }
     * { box-sizing: border-box; }
 
-  .container {
+  /* .container {
      
       display: flex;
       flex-wrap: wrap;
@@ -8550,7 +8550,7 @@ textarea.form-control {
       align-items: center;
       justify-content: center;
       padding: 0 20px;
-    }
+    } */
 
     
     
@@ -8561,6 +8561,7 @@ textarea.form-control {
       overflow: hidden;
       flex-direction: row-reverse;
       height: 150px;
+      
       position: relative;
     }
     
@@ -8655,12 +8656,31 @@ textarea.form-control {
       flex-direction: column;
       flex-wrap: wrap;
       align-items: center;
+      margin-left: 20em;
       box-shadow: 0 4px 30px rgba(0,0,0,.05);
     }
 .re{
   margin-top: 1em;
 }    
 
+.log-out {
+  margin-top: 10px;
+  background-color: white;
+  width: 3em;
+  height: 2em;
+  margin-left: 6px;
+  border-radius: 10px;
+  text-align: center;
+  
+  }.log-out:hover {
+    opacity: 0.7;
+}
+
+  fa, .fas {
+    font-weight: 900;
+    color: black;
+    
+}
 
 /* star
     *{
