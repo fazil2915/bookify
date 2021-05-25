@@ -185,7 +185,7 @@ app.get('/logout',(req,res)=>{
   res.redirect('/');
 })
 
-<!-- Category Route -->
+// <!-- Category Route -->
 app.get("/home/category/:genre", function(req, res) {
 if (req.isAuthenticated()) {
   const list = _.capitalize([req.params.genre]);
