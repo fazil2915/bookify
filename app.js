@@ -60,13 +60,12 @@ const bookSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
   email: String,
-  googleId: String,
   password: String,
+  googleId: String,
   Mybook: [bookSchema]
 });
 
 userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate)
 
 
 const User = new mongoose.model("User", userSchema);
@@ -93,9 +92,24 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
+    User.findOne( {googleId : profile.id}, function( err, foundUser ){
+    if( !err ){                                                          //Check for any errors
+        if( foundUser ){                                          // Check for if we found any users
+            return cb( null, foundUser );                  //Will return the foundUser
+        }else {                                                        //Create a new User
+            const newUser = new User({
+                googleId : profile.id
+            });
+            newUser.save( function( err ){
+                if(!err){
+                    return cb(null, newUser);                //return newUser
+                }
+            });
+        }
+    }else{
+        console.log( err );
+    }
+});
   }
 ));
 
@@ -171,11 +185,18 @@ app.get('/logout',(req,res)=>{
   res.redirect('/');
 })
 
+<!-- Category Route -->
 app.get("/home/category/:genre", function(req, res) {
+if (req.isAuthenticated()) {
   const list = _.capitalize([req.params.genre]);
   Book.find({genre: list}, function(err, found) {
     res.render("catogory", {newListItem: found, new: list})
   })
+}
+else {
+  res.redirect("/signin")
+}
+
 })
 
 //home route
@@ -216,7 +237,7 @@ app.post("/addbook", function(req, res) {
     console.log(req.body.author);
     console.log(req.body.content);
 
-    const genre = req.body.genre;
+    const genre = _.capitalize(req.body.genre);
     const title = req.body.title;
     const author = req.body.author;
     const content = req.body.content;
